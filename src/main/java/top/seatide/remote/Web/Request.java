@@ -8,9 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,7 +62,7 @@ public class Request {
             } else {
                 var params = object.isNull("params") ? null : object.getJSONObject("params");
                 var result = callHandler(params, object.getString("type"));
-                this.setResponse(result.size() == 3 ? result.get(2) : "200 OK", build(result.get(0), result.get(1)));
+                this.setResponse("200 OK", result);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -84,33 +82,50 @@ public class Request {
         output.close();
     }
 
-    public List<String> callHandler(JSONObject params, String type) {
-        var result = new ArrayList<String>();
+    public String callHandler(JSONObject params, String type) {
         try {
             switch (type) {
                 case "get": {
-                    // TODO: get useful informations here
-                    break;
+                    var name = params.getString("name");
+                    switch (name) {
+                        case "ram": {
+                            var runtime = Runtime.getRuntime();
+                            var json = new JSONObject();
+                            json.put("used", (runtime.maxMemory() - runtime.freeMemory()) / 1024L / 1024L);
+                            json.put("max", runtime.maxMemory() / 1024L / 1024L);
+                            return build("ok", json);
+                        }
+
+                        default: {
+                            return build("ng", "Value not found for name '" + name + "'.");
+                        }
+                    }
                 }
 
                 default: {
-                    result.add("ng");
-                    result.add("Action not found.");
+                    return build("ng", "Action not found.");
                 }
             }
         } catch (JSONException e) {
-            result.add("ng");
-            result.add("Parameter is not fulfilled.");
+            return build("ng", "Parameter is not fulfilled.");
         } catch (RuntimeException e) {
             e.printStackTrace();
-            result.add("ng");
-            result.add("Runtime error: " + e.getMessage());
+            return build("ng", "Runtime error: " + e.getMessage());
         }
-        return result;
+    }
+
+    public String build(String status, JSONObject content) {
+        var json = new JSONObject();
+        json.put("status", status);
+        json.put("msg", content);
+        return json.toString();
     }
 
     public String build(String status, String content) {
-        return "{\"status\": \"" + status + "\", \"msg\": \"" + content + "\"}";
+        var json = new JSONObject();
+        json.put("status", status);
+        json.put("msg", content);
+        return json.toString();
     }
 
     public void setResponse(String codeInfo, String res) {
