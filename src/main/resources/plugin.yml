@@ -5,3 +5,8 @@ api-version: 1.16
 authors: [Subilan]
 description: Communication between server and web.
 website: https://seatide.top
+depend:
+  - ProtocolLib
+  - Essentials
+loadbefore:
+  - Essentials

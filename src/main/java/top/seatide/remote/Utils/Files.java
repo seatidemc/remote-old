@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import top.seatide.servercore.Main;
+import top.seatide.remote.Main;
 
 public final class Files {
     public static String cwd;
@@ -16,7 +16,6 @@ public final class Files {
     public static void init(Main plugin) {
         cwd = plugin.getDataFolder().getPath();
         cfg = plugin.getConfig();
-        countdown = load(".", "countdown.yml");
     }
 
     public static File getFile(File folder, String name) throws IOException {
@@ -67,6 +66,5 @@ public final class Files {
 
     public static void reload() {
         cfg = load(".", "config.yml");
-        countdown = load(".", "countdown.yml");
     }
 }
