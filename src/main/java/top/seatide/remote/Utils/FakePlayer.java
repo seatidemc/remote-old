@@ -94,7 +94,7 @@ public final class FakePlayer implements ConsoleCommandSender {
     }
 
     @Override
-    public void sendMessage(String[] messages) {
+    public void sendMessage(String... messages) {
     }
 
     @Override
@@ -103,7 +103,7 @@ public final class FakePlayer implements ConsoleCommandSender {
     }
 
     @Override
-    public void sendMessage(UUID sender, String[] messages) {
+    public void sendMessage(UUID sender, String... messages) {
     }
 
     @Override
