@@ -1,0 +1,7 @@
+name: Remote
+version: '${version}'
+main: top.seatide.remote.Main
+api-version: 1.16
+authors: [Subilan]
+description: Communication between server and web.
+website: https://seatide.top
