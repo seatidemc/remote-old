@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:$minecraftVersion-R0.1-SNAPSHOT"
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     testImplementation 'junit:junit:4.13'
     testImplementation 'com.google.code.findbugs:jsr305:3.0.2'
     implementation group: 'org.json', name: 'json', version: '20210307'

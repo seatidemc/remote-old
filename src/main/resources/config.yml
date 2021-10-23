@@ -2,3 +2,5 @@
 port: 26656
 # 请求池大小，用于限制同时最大请求数量
 pool-size: 15
+# 公告开头文本
+broadcast-prefix: '&e[公告]'
