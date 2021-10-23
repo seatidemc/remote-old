@@ -97,16 +97,19 @@ public class Request {
             case "get": {
                 var name = X.getStringSafe(params, "name");
                 switch (name) {
-                case "ram": {
-                    var runtime = Runtime.getRuntime();
+                case "ram":
+                case "tps":
+                case "gc": {
                     var json = new JSONObject();
-                    json.put("used", (runtime.maxMemory() - runtime.freeMemory()) / 1024L / 1024L);
-                    json.put("max", runtime.maxMemory() / 1024L / 1024L);
+                    if (name.equals("ram") || name.equals("gc")) {
+                        var runtime = Runtime.getRuntime();
+                        json.put("used", (runtime.maxMemory() - runtime.freeMemory()) / 1024L / 1024L);
+                        json.put("max", runtime.maxMemory() / 1024L / 1024L);
+                    }
+                    if (name.equals("tps") || name.equals("gc")) {
+                        json.put("tps", Math.round(Tick.getTPS()));
+                    }
                     return build(ok, json);
-                }
-
-                case "tps": {
-                    return build(ok, String.valueOf(Math.round(Tick.getTPS())));
                 }
 
                 default: {
